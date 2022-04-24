@@ -23,6 +23,14 @@ bool initialize_window(void)
         fprintf(stderr,"Error initializing SDL.\n");
         return false;
     }
+    
+    //USE SDL to query monitor screen size for FULL SCREEN SIZE
+    
+    SDL_DisplayMode display_mode;
+    SDL_GetCurrentDisplayMode(0, &display_mode);
+    window_width = display_mode.w;
+    window_height = display_mode.h;
+    
     //create a sdl window
     window = SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, SDL_WINDOW_BORDERLESS);
     if (!window)
@@ -38,7 +46,8 @@ bool initialize_window(void)
         fprintf(stderr, "Error creating renderer\n");
         return false;
     }
-
+    //FOR FULL SCRENN VIDEO MODE
+    //SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     return true;
 }
 
@@ -100,12 +109,17 @@ void clear_color_buffer(uint32_t color)
 //render function
 void render(void)
 {
+    // clear_color_buffer(0xFF36FF00);
+    // clear_color_buffer(0xFFFFFF00);
+    
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    clear_color_buffer(0xFFFFFF00);
+    
     render_color_buffer();
-    // clear_color_buffer(0xFFFFFF00);
+    // clear_color_buffer(0xFF36FF00);
+    clear_color_buffer(0xFFFFFF00);
+    
 
     SDL_RenderPresent(renderer);
 }
