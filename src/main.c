@@ -82,6 +82,21 @@ void update(void)
 
 }
 
+void draw_grid(void) {
+    for (int y = 0; y < window_height; y++)
+    {
+        for(int x = 0; x < window_width; x++)
+        {
+            if(x%10 == 0 || y %10 ==0 )
+            {
+                color_buffer[(window_width * y) + x ] = 0x000000FF;
+            }
+        }
+    }
+    // TODO:
+}
+
+
 //render color buffer
 void render_color_buffer(void)
 {
@@ -102,7 +117,10 @@ void clear_color_buffer(uint32_t color)
     {
         for(int x = 0; x < window_width; x++)
         {
+            // if((y%40)==0 || (x%40)==0)  /*made a GRID*/
             color_buffer[(window_width * y) + x] = color;
+            
+
         }
     }
 }
@@ -115,10 +133,13 @@ void render(void)
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    
+    // draw_grid();
+    draw_grid();
+
     render_color_buffer();
-    // clear_color_buffer(0xFF36FF00);
-    clear_color_buffer(0xFFFFFF00);
+    //clear_color_buffer(0xFF36FF00); //paints the whole screen
+    clear_color_buffer(0xFF000000); //so disabled to draw grid
+    
     
 
     SDL_RenderPresent(renderer);
