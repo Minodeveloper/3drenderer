@@ -87,7 +87,7 @@ void draw_grid(void) {
     {
         for(int x = 0; x < window_width; x++)
         {
-            if(x%10 == 0 || y %10 ==0 )
+            if(x%30 == 0 || y %30 ==0 )
             {
                 color_buffer[(window_width * y) + x ] = 0x000000FF;
             }
@@ -124,22 +124,48 @@ void clear_color_buffer(uint32_t color)
         }
     }
 }
+
+//draw rectangle
+void draw_rect(int x, int y, int width, int height, uint32_t color)
+{
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j <width; j++)
+        {
+            int current_x = x + i;
+            int current_y = y + j;
+            color_buffer[(window_width * current_y)+ current_x] = color;
+        }
+    }
+}
+// void draw_rect(int x, int y, int width, int height, uint32_t color) {
+//     for (int i = 0; i < width; i++) {
+//         for (int j = 0; j < height; j++) {
+//             int current_x = x + i;
+//             int current_y = y + j;
+//             color_buffer[(window_width * current_y) + current_x] = color;
+//         }
+//     }
+// }
+
 //render function
 void render(void)
 {
     // clear_color_buffer(0xFF36FF00);
-    // clear_color_buffer(0xFFFFFF00);
+    // clear_color_buffer(0xFFFFFF00); // color format is |alphaalpha|RR|GG|BB|
     
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     // draw_grid();
-    draw_grid();
+    //draw_grid();
 
     render_color_buffer();
     //clear_color_buffer(0xFF36FF00); //paints the whole screen
-    clear_color_buffer(0xFF000000); //so disabled to draw grid
+    clear_color_buffer(0xFF000000); //so disabled to draw grid or paint it all black
     
+    //drawing rectangle
+    draw_rect(300,200,100,150,0xFFFF00FF);
     
 
     SDL_RenderPresent(renderer);
