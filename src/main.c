@@ -13,7 +13,7 @@
 vec3_t cube_points[N_POINTS];     // 9 x 9 x 9
 vec2_t projected_points[N_POINTS];
 
-float fov_factor = 128;
+float fov_factor = 108;
 
 bool is_running = false;
 
