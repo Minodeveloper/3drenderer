@@ -13,7 +13,10 @@
 vec3_t cube_points[N_POINTS];     // 9 x 9 x 9
 vec2_t projected_points[N_POINTS];
 
-float fov_factor = 128;
+vec3_t camera_position  = {.x = 0,.y = 0,.z = -5};
+vec3_t cube_rotation = { .x = 0, .y = 0, .z = 0 };
+
+float fov_factor = 828;
 
 bool is_running = false;
 
@@ -72,8 +75,8 @@ vec2_t project(vec3_t point)
 {
     vec2_t projected_point = 
     {
-        .x = (fov_factor * point.x),
-        .y = (fov_factor * point.y)
+        .x = (fov_factor * point.x) /point.z,
+        .y = (fov_factor * point.y) /point.z
     };
     return projected_point;
 }
@@ -82,14 +85,31 @@ vec2_t project(vec3_t point)
 //update function
 void update(void)
 {
+    cube_rotation.y += 0.015;
+    cube_rotation.z += 0.015;
+    cube_rotation.x += 0.015;
+
+
     for(int i  = 0; i < N_POINTS; i++)
     {
         // project the current point
         vec3_t point = cube_points[i];
+        vec3_t transformed_point = vec3_rotate_x(point, cube_rotation.x);
+        transformed_point = vec3_rotate_y(transformed_point, cube_rotation.y);
+
+        transformed_point = vec3_rotate_z(transformed_point, cube_rotation.z);
+
+
+
+
+        // point.z  = point.z - camera_position.z;
+        transformed_point.z -= camera_position.z;
 
         //save the projected 2d vectors in array of projected points
 
-        vec2_t projected_point = project(point);
+        // vec2_t projected_point = project(point);
+        vec2_t projected_point = project(transformed_point);
+
         projected_points[i] = projected_point;
     }
 
@@ -111,7 +131,7 @@ void render(void)
     for(int i  = 0; i < N_POINTS; i++)
     {
         vec2_t projected_point = projected_points[i];
-        draw_rect(projected_point.x + (window_width/2),projected_point.y + (window_height/2),  8, 8,  0xFF00FF00);
+        draw_rect(projected_point.x + (window_width/2),projected_point.y + (window_height/2),  4, 4,  0xFFFFFF00);
     }
 
     render_color_buffer();
