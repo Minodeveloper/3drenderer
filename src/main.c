@@ -20,6 +20,8 @@ float fov_factor = 828;
 
 bool is_running = false;
 
+int previous_frame_time = 0;
+
 
 //setup function
 void setup(void)
@@ -85,6 +87,16 @@ vec2_t project(vec3_t point)
 //update function
 void update(void)
 {
+    int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
+
+    if(time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME){
+        SDL_Delay(time_to_wait);
+    }
+
+
+    // while(!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
+    // previous_frame_time = SDL_GetTicks();
+    
     cube_rotation.y += 0.015;
     cube_rotation.z += 0.015;
     cube_rotation.x += 0.015;
